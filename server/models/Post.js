@@ -1,5 +1,26 @@
 import mongoose from "mongoose";
 
+const commentSchema = mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
+  },
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  userPicturePath: String,
+  location: String,
+  comment: {
+    type: String,
+    required: true,
+  }
+}, { timestamps: true });
+
 const postSchema = mongoose.Schema(
   {
     userId: {
@@ -22,14 +43,10 @@ const postSchema = mongoose.Schema(
       type: Map,
       of: Boolean,
     },
-    comments: {
-      type: Array,
-      default: [],
-    },
+    comments: [commentSchema],
   },
   { timestamps: true }
 );
 
 const Post = mongoose.model("Post", postSchema);
-
 export default Post;
