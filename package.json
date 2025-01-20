@@ -1,0 +1,18 @@
+{
+  "name": "sobermatemk3",
+  "version": "1.0.0",
+  "description": "Build a COMPLETE Fullstack Responsive MERN App with Auth, Likes, Dark Mode | React, MongoDB, MUI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"npm run start-client\" \"npm run start-server\"",
+    "start-client": "npm start --prefix client",
+    "start-server": "cd server && node index.js"    
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
