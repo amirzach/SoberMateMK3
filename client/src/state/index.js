@@ -39,9 +39,23 @@ export const authSlice = createSlice({
       });
       state.posts = updatedPosts;
     },
+    setMood: (state, action) => {
+      if (state.user) {
+        state.user.mood = action.payload;
+      } else {
+        console.error("user non-existent :(");
+      }
+    },
   },
 });
 
-export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost } =
-  authSlice.actions;
+export const { 
+  setMode, 
+  setLogin, 
+  setLogout, 
+  setFriends, 
+  setPosts, 
+  setPost,
+  setMood 
+} = authSlice.actions;
 export default authSlice.reducer;
