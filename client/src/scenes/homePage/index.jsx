@@ -5,10 +5,12 @@ import UserWidget from "scenes/widgets/UserWidget";
 import MyPostWidget from "scenes/widgets/MyPostWidget";
 import PostsWidget from "scenes/widgets/PostsWidget";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
+import MoodSelectWidget from "scenes/widgets/MoodSelectWidget";
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-  const { _id, picturePath } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
+  const { _id, picturePath } = user;
 
   return (
     <Box>
@@ -22,6 +24,7 @@ const HomePage = () => {
       >
         <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
           <UserWidget userId={_id} picturePath={picturePath} />
+          <MoodSelectWidget userId={_id} currentMood={user.mood} />
         </Box>
         <Box
           flexBasis={isNonMobileScreens ? "42%" : undefined}
