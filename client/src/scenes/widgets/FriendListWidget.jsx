@@ -11,6 +11,14 @@ const FriendListWidget = ({ userId }) => {
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
 
+  const moods = {
+    happy: "😊",
+    excited: "🤩",
+    neutral: "😐",
+    sad: "😢",
+    angry: "😠"
+  };
+
   const getFriends = async () => {
     const response = await fetch(
       `http://localhost:5000/users/${userId}/friends`,
@@ -42,7 +50,7 @@ const FriendListWidget = ({ userId }) => {
           <Friend
             key={friend._id}
             friendId={friend._id}
-            name={`${friend.firstName} ${friend.lastName}`}
+            name={`${friend.firstName} ${friend.lastName} ${moods[friend.mood] || moods.neutral}`}
             subtitle={friend.occupation}
             userPicturePath={friend.picturePath}
           />

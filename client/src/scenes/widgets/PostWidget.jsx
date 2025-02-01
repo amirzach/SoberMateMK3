@@ -2,7 +2,8 @@ import {
   ChatBubbleOutlineOutlined,
   FavoriteBorderOutlined,
   FavoriteOutlined,
-  ShareOutlined,
+  FlagOutlined,
+  FlagRounded
 } from "@mui/icons-material";
 import { 
   Box, 
@@ -11,7 +12,7 @@ import {
   Typography, 
   useTheme,
   InputBase,
-  Button
+  Button,
 } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
@@ -30,6 +31,7 @@ const PostWidget = ({
   userPicturePath,
   likes,
   comments,
+  flags = []
 }) => {
   const [isComments, setIsComments] = useState(false);
   const [comment, setComment] = useState("");
@@ -38,14 +40,29 @@ const PostWidget = ({
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
+  const isFlagged = flags.some(flag => flag.userId === loggedInUserId);
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
   const primary = palette.primary.main;
+  const error = palette.error.main;
 
   const patchLike = async () => {
     const response = await fetch(`http://localhost:5000/posts/${postId}/like`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId: loggedInUserId }),
+    });
+    const updatedPost = await response.json();
+    dispatch(setPost({ post: updatedPost }));
+  };
+
+  const patchFlag = async () => {
+    const response = await fetch(`http://localhost:5000/posts/${postId}/flag`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -118,8 +135,12 @@ const PostWidget = ({
           </FlexBetween>
         </FlexBetween>
 
-        <IconButton>
-          <ShareOutlined />
+        <IconButton onClick={patchFlag}>
+          {isFlagged ? (
+            <FlagRounded sx={{ color: error }} />
+          ) : (
+            <FlagOutlined />
+          )}
         </IconButton>
       </FlexBetween>
 
@@ -155,7 +176,6 @@ const PostWidget = ({
           ))}
           <Divider />
           
-          {/* Comment Input Section */}
           <Box p="1rem">
             <FlexBetween gap="1.5rem">
               <InputBase
