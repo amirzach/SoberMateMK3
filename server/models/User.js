@@ -33,6 +33,10 @@ const UserSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    mood: {
+      type: String,
+      default: "neutral",
+    },
     location: String,
     occupation: String,
     viewedProfile: Number,

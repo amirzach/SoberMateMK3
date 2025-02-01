@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
 
+const flagSchema = mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
+  }
+}, { timestamps: true });
+
 const commentSchema = mongoose.Schema({
   userId: {
     type: String,
@@ -44,6 +51,7 @@ const postSchema = mongoose.Schema(
       of: Boolean,
     },
     comments: [commentSchema],
+    flags: [flagSchema],
   },
   { timestamps: true }
 );
