@@ -104,3 +104,28 @@ export const addComment = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
+
+export const flagPost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+    const post = await Post.findById(id);
+
+    // Check if user has already flagged the post
+    const existingFlag = post.flags.find(flag => flag.userId === userId);
+
+    if (existingFlag) {
+      // User already flagged, remove the flag
+      post.flags = post.flags.filter(flag => flag.userId !== userId);
+    } else {
+      // Add new flag
+      post.flags.push({ userId });
+    }
+
+    const updatedPost = await post.save();
+
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
